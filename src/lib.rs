@@ -141,8 +141,8 @@ mod tests {
     }
 
     #[test]
-    fn test_handles_small_iterators() {
-        let file = String::from("test_files/success");
+    fn test_handles_asc_iterators() {
+        let file = String::from("test_files/asc");
         let f1 = File::open(&file).unwrap();
         let f2 = File::open(&file).unwrap();
 
@@ -157,6 +157,39 @@ mod tests {
             Err(_) => { panic!("do not expect it") }
         }
     }
+
+    #[test]
+    fn test_handles_desc_iterators() {
+        let file = String::from("test_files/desc");
+        let f1 = File::open(&file).unwrap();
+        let f2 = File::open(&file).unwrap();
+        let skip = 5;
+        let first = 0;
+
+        let range1 = BufReader::new(f1).lines().to_int().enumerate();
+        let range2 = BufReader::new(f2).lines().to_int().enumerate();
+
+        match algo(range1, range2, skip) {
+            Ok(res) => { assert_eq!(res, (first,skip)) }
+            Err(_) => { panic!("do not expect it") }
+        }
+    }
+
+    #[test]
+    fn test_handles_random_numbers() {
+        let file = String::from("test_files/random");
+        let f1 = File::open(&file).unwrap();
+        let f2 = File::open(&file).unwrap();
+        let skip = 10;
+        let range1 = BufReader::new(f1).lines().to_int().enumerate();
+        let range2 = BufReader::new(f2).lines().to_int().enumerate();
+
+        match algo(range1, range2, skip) {
+            Ok((i,j)) => { }
+            Err(_) => { panic!("do not expect it") }
+        }
+    }
+
 
     #[test]
     fn test_handles_iterator_greater_than_max_arr_size() {
